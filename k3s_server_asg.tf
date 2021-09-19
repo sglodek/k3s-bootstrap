@@ -32,6 +32,7 @@ resource "aws_launch_template" "k3s-server" {
 
     tags = {
       Name = "k3s Server - sglodek"
+      role = "k3s_server"
     }
   }
 }

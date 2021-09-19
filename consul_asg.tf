@@ -32,7 +32,7 @@ resource "aws_launch_template" "consul" {
 
     tags = {
       Name = "Consul Server - sglodek"
-      Role = "consul_server"
+      role = "consul_server"
     }
   }
 }
