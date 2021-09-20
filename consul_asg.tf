@@ -25,7 +25,7 @@ resource "aws_launch_template" "consul" {
     arn = aws_iam_instance_profile.consul.arn
   }
 
-  user_data = filebase64("${path.module}/user_data/consul.sh")
+  user_data = filebase64("${path.module}/user_data/bootstrap.sh")
 
   tag_specifications {
     resource_type = "instance"

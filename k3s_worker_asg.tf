@@ -21,6 +21,8 @@ resource "aws_launch_template" "k3s-worker" {
   key_name               = aws_key_pair.sglodek.id
   vpc_security_group_ids = [aws_security_group.common.id, aws_security_group.k3s.id]
 
+  user_data = filebase64("${path.module}/user_data/bootstrap.sh")
+
   tag_specifications {
     resource_type = "instance"
 
