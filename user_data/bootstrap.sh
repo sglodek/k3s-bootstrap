@@ -7,6 +7,7 @@ apt update && apt install -y awscli
 INSTANCE_ID=$(ec2metadata --instance-id)
 REGION=$(curl -s http://169.254.169.254/latest/dynamic/instance-identity/document | grep region | awk -F\" '{print $4}')
 ROLE=$(aws ec2 describe-tags --filters "Name=resource-id,Values=$INSTANCE_ID" "Name=key,Values=role" --region=$REGION --output=text | cut -f5)
+IPV4_ADDR=$(curl -s http://169.254.169.254/latest/meta-data/local-ipv4)
 
 ### Install Consul and generate service config ###
 curl -fsSL https://apt.releases.hashicorp.com/gpg | apt-key add -
@@ -17,6 +18,11 @@ consul_template="configs/consul-service"
 consul_template_str=$(cat "${consul_template}")
 eval "echo \"${consul_template_str}\"" > /etc/consul.d/$ROLE.hcl
 
+echo 'bind_addr = "$IPV4_ADDR"' >> /etc/consul.d/consul.hcl
+echo 'retry_join = ["provider=aws tag_key=role tag_value=consul-server"]' >> /etc/consul.d/consul.hcl
+systemctl start consul
+systemctl enable consul
+
 ### Configure systemd-resolved to use Consul ###
 iptables -t nat -A OUTPUT -d localhost -p udp -m udp --dport 53 -j REDIRECT --to-ports 8600
 iptables -t nat -A OUTPUT -d localhost -p tcp -m tcp --dport 53 -j REDIRECT --to-ports 8600
@@ -24,6 +30,9 @@ iptables -t nat -A OUTPUT -d localhost -p tcp -m tcp --dport 53 -j REDIRECT --to
 echo 'DNS=127.0.0.1' >> /etc/systemd/resolved.conf
 echo 'Domains=~consul' >> /etc/systemd/resolved.conf
 systemctl restart systemd-resolved.service
+
+## MOTD Config
+echo $ROLE > /etc/motd
 
 ### Install Role Specific Features ###
 source roles/$ROLE.sh
