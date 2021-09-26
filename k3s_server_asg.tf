@@ -3,9 +3,9 @@ resource "aws_autoscaling_group" "k3s-server" {
 
   vpc_zone_identifier = [aws_subnet.public.id]
 
-  desired_capacity = 1
-  max_size         = 1
-  min_size         = 1
+  desired_capacity = 3
+  max_size         = 3
+  min_size         = 3
 
   launch_template {
     id      = aws_launch_template.k3s-server.id
