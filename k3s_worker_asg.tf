@@ -28,7 +28,7 @@ resource "aws_launch_template" "k3s-worker" {
 
     tags = {
       Name = "k3s Worker - sglodek"
-      role = "k3s_worker"
+      role = "k3s-worker"
     }
   }
 }
