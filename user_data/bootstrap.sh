@@ -3,7 +3,7 @@
 ### Find instance role ###
 git clone https://github.com/sglodek/k3s-bootstrap.git
 cd k3s-bootstrap/user_data
-apt install -y awscli
+apt update && apt install -y awscli
 INSTANCE_ID=$(ec2metadata --instance-id)
 REGION=$(curl -s http://169.254.169.254/latest/dynamic/instance-identity/document | grep region | awk -F\" '{print $4}')
 ROLE=$(aws ec2 describe-tags --filters "Name=resource-id,Values=$INSTANCE_ID" "Name=key,Values=role" --region=$REGION --output=text | cut -f5)
