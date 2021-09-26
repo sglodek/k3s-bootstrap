@@ -63,24 +63,37 @@ resource "aws_security_group" "consul" {
   }
 }
 
-resource "aws_security_group" "k3s" {
-  name   = "k3s-sglodek"
+resource "aws_security_group" "k3s-server" {
+  name   = "k3s-server-sglodek"
   vpc_id = aws_vpc.k3s.id
 
   ingress {
-    description = "k3s communcation"
+    description = "Kubernetes API Server"
     from_port   = 6443
     to_port     = 6443
     protocol    = "tcp"
-    self        = true
+
+    security_groups = [aws_security_group.k3s-worker.id]
   }
 
   ingress {
-    description = "k3s communcation"
+    description = "Flannel VXLAN"
     from_port   = 8472
     to_port     = 8472
     protocol    = "udp"
     self        = true
+
+    security_groups = [aws_security_group.k3s-worker.id]
+  }
+
+  ingress {
+    description = "Kubelet metrics"
+    from_port   = 10250
+    to_port     = 10250
+    protocol    = "tcp"
+    self        = true
+
+    security_groups = [aws_security_group.k3s-worker.id]
   }
 
   ingress {
@@ -90,4 +103,9 @@ resource "aws_security_group" "k3s" {
     protocol    = "tcp"
     self        = true
   }
+}
+
+resource "aws_security_group" "k3s-worker" {
+  name   = "k3s-worker-sglodek"
+  vpc_id = aws_vpc.k3s.id
 }

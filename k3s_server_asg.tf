@@ -19,7 +19,7 @@ resource "aws_launch_template" "k3s-server" {
   image_id               = "ami-03d5c68bab01f3496"
   instance_type          = "t3.small"
   key_name               = aws_key_pair.sglodek.id
-  vpc_security_group_ids = [aws_security_group.common.id, aws_security_group.k3s.id]
+  vpc_security_group_ids = [aws_security_group.common.id, aws_security_group.k3s-server.id]
 
   iam_instance_profile {
     arn = aws_iam_instance_profile.consul.arn
