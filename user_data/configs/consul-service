@@ -1,6 +1,6 @@
 {
   "service": {
-    "name": $ROLE,
+    "name": "$ROLE",
     "port": 80
   }
 }
