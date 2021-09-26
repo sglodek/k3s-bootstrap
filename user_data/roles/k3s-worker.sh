@@ -7,4 +7,4 @@ systemctl enable consul
 
 ### Install k3s ###
 #echo 'server = true' >> /etc/rancher/k3s/config.yaml
-curl -sfL https://get.k3s.io | K3S_TOKEN="123" K3S_URL=https://k3s-server.service.consul:6443 sh -
+#curl -sfL https://get.k3s.io | K3S_TOKEN="123" K3S_URL=https://k3s-server.service.consul:6443 sh -
