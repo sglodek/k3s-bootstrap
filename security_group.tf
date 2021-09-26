@@ -72,6 +72,7 @@ resource "aws_security_group" "k3s-server" {
     from_port   = 6443
     to_port     = 6443
     protocol    = "tcp"
+    self        = true
 
     security_groups = [aws_security_group.k3s-worker.id]
   }
