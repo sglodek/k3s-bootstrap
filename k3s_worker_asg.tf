@@ -3,9 +3,9 @@ resource "aws_autoscaling_group" "k3s-worker" {
 
   vpc_zone_identifier = [aws_subnet.public.id]
 
-  desired_capacity = 1
-  max_size         = 1
-  min_size         = 1
+  desired_capacity = var.asg_count["k3s-worker"]
+  max_size         = var.asg_count["k3s-worker"]
+  min_size         = var.asg_count["k3s-worker"]
 
   launch_template {
     id      = aws_launch_template.k3s-worker.id

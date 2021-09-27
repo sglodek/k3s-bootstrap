@@ -3,9 +3,9 @@ resource "aws_autoscaling_group" "consul" {
 
   vpc_zone_identifier = [aws_subnet.public.id]
 
-  desired_capacity = 3
-  max_size         = 3
-  min_size         = 3
+  desired_capacity = var.asg_count["consul-server"]
+  max_size         = var.asg_count["consul-server"]
+  min_size         = var.asg_count["consul-server"]
 
   launch_template {
     id      = aws_launch_template.consul.id
