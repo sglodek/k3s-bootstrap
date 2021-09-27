@@ -3,9 +3,9 @@ resource "aws_autoscaling_group" "k3s-server" {
 
   vpc_zone_identifier = [aws_subnet.public.id]
 
-  desired_capacity = 3
-  max_size         = 3
-  min_size         = 3
+  desired_capacity = var.asg_count["k3s-server"]
+  max_size         = var.asg_count["k3s-server"]
+  min_size         = var.asg_count["k3s-server"]
 
   launch_template {
     id      = aws_launch_template.k3s-server.id
@@ -31,8 +31,9 @@ resource "aws_launch_template" "k3s-server" {
     resource_type = "instance"
 
     tags = {
-      Name = "k3s Server - sglodek"
-      role = "k3s-server"
+      Name      = "k3s Server - sglodek"
+      role      = "k3s-server"
+      bootstrap = var.k3s_bootstrap
     }
   }
 }
