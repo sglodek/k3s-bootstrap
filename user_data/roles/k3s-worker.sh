@@ -2,7 +2,7 @@
 
 ### Configure Consul ###
 IPV4_ADDR=$(curl -s http://169.254.169.254/latest/meta-data/local-ipv4)
-echo 'bind_addr = "$IPV4_ADDR"' >> /etc/consul.d/consul.hcl
+echo "bind_addr = \"$IPV4_ADDR\"" >> /etc/consul.d/consul.hcl
 systemctl restart consul
 
 ### Install k3s ###
