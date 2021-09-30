@@ -1,6 +1,6 @@
 provider "aws" {
   region  = "us-west-2"
-  profile = "systest"
+  profile = var.aws_profile
 
   default_tags {
     tags = {
